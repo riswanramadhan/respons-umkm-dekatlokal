@@ -1,0 +1,228 @@
+@import "tailwindcss";
+
+:root {
+  --brand-primary: #0255f5;
+  --brand-primary-hover: #0148d8;
+  --brand-primary-soft: #eaf1ff;
+  --page-bg: #f4f6fa;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --text-primary: #111827;
+  --text-secondary: #667085;
+  --text-tertiary: #98a2b3;
+  --border: #e7eaf0;
+  --border-strong: #d8dde7;
+  --success: #16a34a;
+  --success-soft: #eaf8ef;
+  --warning: #f59e0b;
+  --warning-soft: #fff7e8;
+  --danger: #ef4444;
+  --danger-soft: #fdecec;
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --radius-panel: 20px;
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.03),
+    0 4px 12px rgba(16, 24, 40, 0.04);
+  --shadow-floating: 0 16px 40px rgba(16, 24, 40, 0.12);
+
+  /* Compatibility aliases used by existing screens while they are refactored. */
+  --primary: var(--brand-primary);
+  --primary-hover: var(--brand-primary-hover);
+  --primary-soft: var(--brand-primary-soft);
+  --background: var(--page-bg);
+  --foreground: var(--text-primary);
+  --muted-foreground: var(--text-secondary);
+}
+
+* {
+  border-color: var(--border);
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-secondary) 34%, transparent)
+    transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  min-height: 44px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-secondary) 32%, transparent);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--brand-primary) 55%, transparent);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+html {
+  background: var(--page-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  outline-color: var(--primary);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-primary) 24%, transparent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary-hover);
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text-secondary) 34%, transparent)
+    transparent;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+.ai-chat-window {
+  transform-origin: right bottom;
+  animation: ai-chat-pop 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ai-chat-message {
+  animation: ai-chat-message-in 220ms ease-out both;
+}
+
+.ai-chat-launcher {
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.ai-chat-launcher-glow {
+  animation: ai-chat-orbit 6s linear infinite;
+}
+
+.ai-chat-icon-core {
+  transform: translateZ(18px);
+  animation: ai-chat-float 3.2s ease-in-out infinite;
+}
+
+.ai-thinking-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0255f5, #0ea5e9);
+  animation: ai-thinking-dot 1.05s ease-in-out infinite;
+}
+
+@keyframes ai-chat-pop {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(18px, 20px, 0) scale(0.88) rotateX(8deg);
+  }
+
+  72% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, -4px, 0) scale(1.015) rotateX(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1) rotateX(0deg);
+  }
+}
+
+@keyframes ai-chat-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ai-chat-float {
+  0%,
+  100% {
+    transform: translateZ(18px) translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+
+  50% {
+    transform: translateZ(18px) translateY(-3px) rotateX(5deg) rotateY(-6deg);
+  }
+}
+
+@keyframes ai-chat-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ai-thinking-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.45;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  [data-print-hidden="true"] {
+    display: none !important;
+  }
+}
