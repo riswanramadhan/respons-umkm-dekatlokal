@@ -197,8 +197,7 @@ function businessNameForRow(row: SeedRow) {
 }
 
 function emailForRow(row: SeedRow) {
-  if (row.email) return row.email;
-  const words = row.owner_name
+  const words = `${row.owner_name} ${row.business_name}`
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -206,12 +205,19 @@ function emailForRow(row: SeedRow) {
     .trim()
     .split(/\s+/)
     .filter((word) => word.length > 1 && !["spd", "mpd"].includes(word));
-  const local = (words.slice(0, 2).join(".") || `umkm${row.legacy_no}`).slice(
-    0,
-    24,
-  );
-  const suffix = ((row.legacy_no * 17 + 23) % 90) + 10;
-  return `${local}${suffix}@gmail.com`;
+  const alphabet = "abcdefghijklmnopqrstuvwxyz";
+  let hash = row.legacy_no * 7919;
+  for (const character of `${row.owner_name}${row.business_name}`) {
+    hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
+  }
+  const suffix = String(hash).slice(-6);
+  const shuffled = Array.from({ length: 4 }, (_, index) =>
+    alphabet[(hash >>> (index * 5)) % alphabet.length],
+  ).join("");
+  const local = (words.slice(0, 2).join("") || `umkm${row.legacy_no}`)
+    .slice(0, 18)
+    .replace(/[^a-z0-9]/g, "");
+  return `${local}${shuffled}${suffix}@gmail.com`;
 }
 
 function whatsappForRow(row: SeedRow) {

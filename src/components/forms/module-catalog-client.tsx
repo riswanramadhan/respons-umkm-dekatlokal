@@ -40,6 +40,7 @@ interface ModuleItem {
   sentCount: number;
   notSentCount: number;
   materialHref: string | null;
+  coverImageHref: string | null;
   assignedBusinesses?: Array<{
     id: string;
     slug: string;
@@ -118,6 +119,11 @@ export function ModuleCatalogClient({
             key={module.id}
             className={`${!module.is_active ? "opacity-60" : ""} ${selectedModule === module.slug ? "border-[var(--brand-primary)] ring-2 ring-blue-100" : ""}`}
           >
+            {module.coverImageHref ? (
+              <div className="relative aspect-[16/8] overflow-hidden rounded-t-[var(--radius-card)] bg-[#EAF1FF]">
+                <img src={module.coverImageHref} alt={`Sampul ${module.name}`} className="size-full object-cover object-center" />
+              </div>
+            ) : null}
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div>

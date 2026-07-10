@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Bell, ChevronDown, LogOut, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { logoutAction } from "@/features/auth/actions";
 import { formatDateTime } from "@/lib/utils";
@@ -39,6 +40,13 @@ export function DashboardHeader({
   session: SessionProfile;
   notifications: NotificationData;
 }) {
+  const [liveTime, setLiveTime] = useState("");
+  useEffect(() => {
+    const update = () => setLiveTime(new Intl.DateTimeFormat("id-ID", { timeZone: "Asia/Makassar", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(new Date()));
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
   return (
     <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-white/95 backdrop-blur">
       <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
@@ -60,6 +68,10 @@ export function DashboardHeader({
             className="bg-[#F9FAFB] pl-9"
           />
         </form>
+        <div className="hidden whitespace-nowrap text-right lg:block" aria-label="Jam live WITA">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#98A2B3]">Live WITA</p>
+          <p className="font-mono text-sm font-semibold text-[#344054]">{liveTime || "--:--:--"}</p>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
@@ -67,9 +79,9 @@ export function DashboardHeader({
             className="relative flex size-10 cursor-pointer items-center justify-center rounded-[10px] text-[#475467] hover:bg-[var(--surface-muted)]"
             aria-label={`${notifications.count} notifikasi tindak lanjut`}
           >
-            <Bell className="size-5" />
+              <Bell className="size-5" />
             {notifications.count > 0 ? (
-              <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-[#DC2626] text-[9px] font-bold text-white">
+              <span className="notification-pulse absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-[#DC2626] text-[9px] font-bold text-white">
                 {Math.min(notifications.count, 9)}
               </span>
             ) : null}
